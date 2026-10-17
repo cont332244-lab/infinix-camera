@@ -10,6 +10,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,11 +21,17 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Check project files
+      - name: Build debug APK
         run: |
-          echo "Repository files:"
-          find . -maxdepth 4 -type f | sort
-          test -f settings.gradle || test -f settings.gradle.kts
+          gradle --version
+          gradle assembleDebug --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: infinix-camera-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
