@@ -31,7 +31,7 @@ jobs:
 
       - name: Build APK
         run: |
-          if [ -f ./gradlew ]; then
+          if [ -f "./gradlew" ]; then
             chmod +x ./gradlew
             ./gradlew assembleDebug --stacktrace
           else
